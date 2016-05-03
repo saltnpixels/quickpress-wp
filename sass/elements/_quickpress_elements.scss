@@ -1,0 +1,48 @@
+p{
+	margin: 0;
+	margin-bottom: $baseline;
+}
+
+//quickpress additions
+
+.right-sidebar .post-content{
+	float: right;
+}
+
+
+.none .break-out{
+	padding: 0 15px;
+}
+
+
+//because the article collapses the header has this margin and here im taking it off
+.has-sidebar article{
+	margin-bottom: 0;
+} 
+
+
+
+/*--------------------------------------------------------------
+# posts
+--------------------------------------------------------------*/
+
+.entry-meta, .entry-footer{
+	font-size: .8rem;
+}
+
+
+
+/*--------------------------------------------------------------
+# beaver builder: make page building easy even for clients! its like easy building inside my theme.
+--------------------------------------------------------------*/
+.site-content .fl-module-content{
+	
+	margin: 0 0 $baseline 0;
+}
+
+.fl-row-content-wrap{
+	padding: 0;
+}
+
+
+

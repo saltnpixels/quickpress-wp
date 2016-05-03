@@ -1,0 +1,661 @@
+
+/*--------------------------------------------------------------
+>>> TABLE OF CONTENTS:
+----------------------------------------------------------------
+# Variables
+# quick styling the main site menu
+# Helpers
+# Site-top styles  - add your styles here for site top
+# Site-top Layouts
+# Nav Basic Styling
+# Widths of Logo and Nav
+# mobile button styles
+# sub menus
+# sub menus on desktop
+# mobile nav popout
+# sub menus on mobile
+# sidebar menus structure
+--------------------------------------------------------------*/
+
+
+
+/*--------------------------------------------------------------
+# pwm_wp Variables
+--------------------------------------------------------------*/
+
+
+//baisc nav vars
+$nav-vertical-align: middle; //can be middle, top, bottom. applies when desktop menu is used
+
+//widths of logo and nav
+$logo-column-width: 50%;
+$nav-column-width: 50%;
+
+
+//when menu should go mobile as opposed to rest of site.
+$mobile-nav-menu: $mobile-width;  //same as mobile width but can be changed here
+
+ 
+$fa: 'fontAwesome';
+
+
+/*--------------------------------------------------------------
+# quick styling the main site menu
+--------------------------------------------------------------*/
+/*
+	here you can quickly style most of the components that need styling
+	without having to go through all the code and figure it out.
+	if you need more styling, you're on your own!
+	the widget area menu is not styled.
+*/
+
+
+	
+//applied to .site-top. holds logo and nav
+@mixin site-top-styles(){
+	background: blue;  
+	height: 70px;
+	//position: absolute;  //make absolute to have it get swallowed by .site-header
+	z-index: 99; 
+} 
+
+//basic li styling for both desktop and mobile
+@mixin site-menu-li(){
+	font-family: $font__main;
+	font-weight: 700;
+	color: white;
+	cursor: pointer;  
+	font-size: 1.1rem;
+	a:focus{
+		outline: none;
+		
+	}
+}  
+
+
+//li on desktop only. a inherits colors.
+@mixin site-menu-li-on-desktop(){
+	&:hover{
+			color: orange;
+	}
+}
+
+//styling li on mobile only 
+@mixin site-menu-li-on-mobile(){
+	color: white;
+	//background: rgba(0,0,0, 0.5);
+}
+
+//applied to .main-navigation .site-menu. The pop out. set off screen position here
+@mixin site-menu-mobile(){
+		top: 0;
+		left: 0;
+		height: 100vh;
+		width: 50vw;
+		background: black;
+		transform: translate(-100%, 0);  //off screen to the left
+}
+
+//applied on button.menu-toggle in mobile
+@mixin mobile-menu-toggle(){
+	  color: black;
+}
+
+//when that toggle button is clicked
+@mixin mobile-menu-toggle-on(){
+	color: red;
+}
+
+//sub-menus everywhere.
+@mixin sub-menu(){
+	
+}
+
+//.sub-menu on desktop
+@mixin sub-menu-on-desktop(){
+	background: #780f0f; //beware underscores adds a box-shadow...
+}
+
+
+//.sub-menu on mobile
+@mixin sub-menu-on-mobile(){
+	background: transparent;
+}
+
+
+
+/*--------------------------------------------------------------
+# helpers
+--------------------------------------------------------------*/
+
+
+@mixin vertical-aligns($align){
+//vertical align middle without flexbox needed applied to site-menu and site-logo
+		>*{
+			display: inline-block;
+			vertical-align: $align;
+		}
+	  &:before {
+	  content: '';
+	  display: inline-block;
+	  height: 100%; 
+	  vertical-align: middle;
+	  margin-right: -0.25em; /* Adjusts for spacing */
+	  }
+}
+
+#page .vertical-align{
+	@include vertical-aligns(middle);
+}
+
+/*--------------------------------------------------------------
+# site-top styles. Add your styles here
+--------------------------------------------------------------*/
+
+.site-top{
+	width: 100%;
+	@extend .clear;
+	
+	@include site-top-styles();
+	.wrap{
+		height: 100%; //helps vertical alignment of menu inside site-top if there is a wrap
+	}
+	
+	.site-logo{
+		
+		a{ color: white; text-decoration: none; }
+	}
+}
+
+
+/*--------------------------------------------------------------
+# site-top layouts. Layouts set via customizer
+--------------------------------------------------------------*/
+
+//when logo is centered, drop menu underneath.
+.site-top.center-logo{
+	height: auto;
+	.site-logo{
+		@extend .aligncenter;
+		margin-bottom: $baseline;
+		
+		h1, p{ text-align: center; color: white; text-decoration: none;}
+	
+	}
+
+	
+	.main-navigation, .site-logo{
+		width: 100%;
+		margin: auto;
+		float: none;
+		text-align: center;
+	}
+}
+
+//logo on left. move site menu to the right  
+.site-top.left-logo{
+	.site-menu{
+		text-align: right;
+		*{
+			text-align: left;
+		}
+	}
+}
+
+//logo on right
+.site-top.right-logo{
+	.site-logo{ 
+		float: right; 
+		text-align: right; 
+		}
+}
+
+
+/*--------------------------------------------------------------
+# nav basic styling
+--------------------------------------------------------------*/
+
+//basic styles on the list items across all devices
+.site-menu li{
+	@include site-menu-li();
+}
+
+
+ 
+
+//basic menu li spacing on top level items. Add you styles for them here. hover styles down below line 165
+.main-navigation .site-menu>ul>li{
+	margin-right: 20px;
+
+	&:last-of-type{
+		margin-right: 0;
+	}
+	//all a's inside li's
+	a{
+		color: inherit;
+		@extend .transitions;
+	}
+}
+
+
+//centering nav vertically on desktop and giving desktop hover on list items
+@media screen and (min-width: $mobile-nav-menu) {
+	
+	.main-navigation .site-menu, .site-logo{
+	height: 100%;
+	@include vertical-aligns($nav-vertical-align);  //ul#primary-menu is getting inline-block also from this helper
+ }
+  
+  .site-menu li{
+		@include site-menu-li-on-desktop();
+	}
+
+
+}
+
+
+.site-title{
+	margin: 0;
+	
+	svg{
+		max-width: 100%;
+	}
+}
+
+
+/*--------------------------------------------------------------
+# widths of the logo and nav
+--------------------------------------------------------------*/
+
+body .main-navigation{
+	width: $nav-column-width;
+	height: 100%; //remove for mobile
+}
+
+body .site-logo{ 
+	width: $logo-column-width;
+	img{
+		display: block;
+		margin: auto;
+	}
+}
+
+
+//floating them both left is basic layout
+.main-navigation, .site-logo{
+	float: left;
+	padding: 0 15px;
+	clear: none; 
+	margin-bottom: 0;
+}
+
+
+/*--------------------------------------------------------------
+# mobile button styles
+--------------------------------------------------------------*/
+
+
+//basic upper left position. style here. other button styles in button.scss
+.menu-toggle{
+	border: none;
+	position: absolute;
+	left: 15px;
+	top: 15px;
+	z-index: 99;
+	padding: 3px 10px;
+	@include mobile-menu-toggle();
+
+}
+
+.main-navigation.toggled .menu-toggle{
+	position: fixed;
+	
+	.admin-bar &{
+		top: 46px + 15px;
+	}
+	
+	@include mobile-menu-toggle-on();
+}
+
+
+//media query from underscores menus has been moved here.
+@media screen and (min-width: $mobile-nav-menu) {
+	//on large screens dont show the mobile button
+	.menu-toggle { 
+		display: none;
+	}
+	
+	
+	.main-navigation ul ul{
+		display: block;
+	}
+	
+	/*
+		if someone goes mobile on desktop and then toggled the icon and then goes back to wide screen, we need to keep it inline-block.
+		*/
+.main-navigation.toggled ul {
+	display: inline-block;
+	}
+	
+	//hide mobile dropdown for clicking event
+	.main-navigation .dropdown-toggle{
+		display: none;
+	}
+
+	
+}
+
+
+
+/*--------------------------------------------------------------
+# sub menus
+--------------------------------------------------------------*/
+
+/*
+	no styling here. just layout. style you sub menu in mobile and desktop sub menus. This is for universal stuff and layout, and showing and hiding on hover or click.
+*/
+
+.main-navigation{
+	 .sub-menu{
+    position:absolute;
+    left: 0;
+    z-index: 1;
+    visibility:hidden;
+    opacity: 0;
+    max-height: 0;
+    transition: all .4s ease;
+    
+    @include sub-menu();
+ 
+ //enable for fun dropdown!
+    //transform:perspective(400) rotate3d(1,0,0,-90deg);
+    //transform-origin:50% 0;
+    }
+    
+    .sub-menu .sub-menu{
+	    left: 100%;
+    }
+    
+ //if li has children show dropdown icon and clickable icon. clickable is hidden on mobile  
+.menu-item-has-children > a:after, .dropdown-toggle:after {
+    content: "\f107";
+    margin-left: 5px;
+    font-family: 'fontAwesome';
+    }
+    
+}
+
+
+
+/*--------------------------------------------------------------
+# sub menus on desktop
+--------------------------------------------------------------*/
+
+
+@media screen and (min-width: $mobile-nav-menu) {
+	
+	
+
+.main-navigation .sub-menu{  //leave it open for a few seconds even when someone hovers off
+	transition-delay: .3s;
+	@include sub-menu-on-desktop();
+	padding: 5px;
+}
+
+
+	//hide and show on hover. issue with focus on a menu item thats points to hash
+.main-navigation{
+		li:hover > .sub-menu,
+		li.focus > .sub-menu{
+    visibility: visible;
+    opacity: 1;
+    transition-delay: 0;
+    max-height: 1000px;
+    
+    //enable for fun dropdown
+    //transform:perspective(400) rotate3d(0,0,0,0);
+    }
+	} 
+	
+}
+
+
+/*--------------------------------------------------------------
+# mobile nav popout
+--------------------------------------------------------------*/
+@media screen and (max-width: $mobile-nav-menu) {
+	//small screens
+	
+	
+	//top level styles in mobile. style here
+	.site-menu li{
+				
+		@include site-menu-li-on-mobile();
+	} 
+	
+	
+//logo goes center
+	body .site-logo{
+		width: 100%;
+		text-align: center;
+}
+
+
+
+body .main-navigation{
+	position: absolute;
+	height: 0;
+}
+
+//set nav to fixed and large. This is the big backgroudn that flies in.
+	.main-navigation .site-menu{		
+		position: fixed;
+		z-index: 90;
+		transition: transform .5s;
+		
+		@include site-menu-mobile();
+		 >ul{
+			padding-top: 50px;
+		}
+		
+		//add padding top when logged in
+		.admin-bar &>ul{
+			padding-top: 100px;
+		}
+	
+}
+
+
+//making menu straight down
+.main-navigation .site-menu{
+		ul>li{
+			float: none;
+			margin: 0;
+			padding: 5px 0;		
+		}
+		
+		 li{
+			float: none;
+			
+			a{
+				width: 80%;
+				padding-left: 10px;
+			}
+			
+		}
+	
+}
+
+	.main-navigation.toggled .site-menu{
+		transform: translate(0, 0);
+	}
+	
+}
+
+
+/*--------------------------------------------------------------
+# mobile sub menus
+--------------------------------------------------------------*/
+@media screen and (max-width: $mobile-nav-menu) {
+	//small screens
+
+
+//add your own style to .sub-menu here for desktop
+	.main-navigation .sub-menu{
+		@include sub-menu-on-mobile();
+	}
+	
+//sub-menu clickable arrow button whwn on mobile
+.dropdown-toggle, .dropdown-toggle:hover{
+	border: none;
+	box-shadow: none;
+	color: inherit;
+	background: transparent;
+	font-size: inherit;
+	font-weight: inherit;
+	padding: 3px 0 0 0;
+	position: absolute;
+	top: 5px;
+	right: 10px;
+	z-index: 50;
+	
+	&:before{
+		content: '';
+		border-left: 1px solid white;
+		opacity: .5;
+	}
+}
+
+.dropdown-toggle.toggled-on:after{
+	content: '\f106';
+}
+
+
+
+
+//hide desktop dropdown icon
+ .main-navigation .menu-item-has-children > a:after{
+	   content: '';
+   }
+
+	
+	
+//sub-menu should now drop down. no hover effect.
+
+//I chose to use jQuery slidetoggle instead of max-height. so display: none was added as well as max-height: none and no transitions and no toggled-on class used except to change icon
+
+//you can also use straight down on desktop by including this in desktop submenu area above.
+	.main-navigation ul{
+		 ul.sub-menu{
+		position: static;
+		transition-delay: 0;
+		opacity: 1;
+		visibility: visible;
+		transition: all 1s ease;
+		transition: none;  //using jQuery slidetoggle instead
+		box-shadow: none;
+		float: none;
+		overflow: visible;
+		max-height: none;  //using jQuery slidetoggle instead
+	  display: none;
+		}
+	
+			
+/*
+	  .sub-menu.toggled-on{
+    visibility: visible;
+    opacity: 1;
+   // max-height: 300px;  //using jQuery sldietoggle instead
+    transition-delay: 0;
+    display: block;
+    //transform:perspective(400) rotate3d(0,0,0,0);
+    }
+*/
+   }
+   
+  
+	
+}
+
+
+
+
+/*--------------------------------------------------------------
+# sidebar menus structure
+--------------------------------------------------------------*/
+
+
+#secondary .widget_nav_menu{
+	
+/*
+	ul{
+		list-style: none;
+		margin: 0;
+		padding-left: 0;
+	}
+*/
+	
+	>ul>li{
+			float: none;
+			margin: 0;
+			padding: 5px 0;		
+		}
+		
+		 li{
+			float: none;
+			position: relative;
+			
+			a{
+				width: 80%;
+				padding-left: 10px;
+			}
+			
+		}
+		
+		ul.sub-menu{
+			position: static;
+			transition-delay: 0;
+			opacity: 1;
+			visibility: visible;
+			transition: all 1s ease;
+			transition: none;  //using jQuery slidetoggle instead
+			box-shadow: none;
+			float: none;
+			overflow: visible;
+			max-height: none;  //using jQuery slidetoggle instead
+		  display: none;
+		}
+		
+		//sub-menu clickable arrow button whwn on mobile
+.dropdown-toggle, .dropdown-toggle:hover{
+	border: none;
+	box-shadow: none;
+	color: inherit;
+	background: transparent;
+	font-size: inherit;
+	font-weight: inherit;
+	padding: 3px 0 0 0;
+	position: relative;
+	top: 0;
+	right: -10px;
+	z-index: 50;
+	
+	&:before{
+		content: '';
+		border-left: 1px solid white;
+		opacity: .5;
+	}
+	
+	&:after{
+		content: "\f107";
+		font-family: $fa;
+	}
+}
+
+.dropdown-toggle.toggled-on:after{
+	content: '\f106';
+}
+
+}
+
+
